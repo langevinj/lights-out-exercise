@@ -87,7 +87,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   }
 
   // if the game is won, just show a winning msg & render nothing else
-  const winningMessage = (<h1>YOU WON!!!</h1>)
+  const winningMessage = (<h1 data-testid="win-message">YOU WON!!!</h1>)
   // TODO
 
   const tableArray = []
@@ -95,12 +95,12 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     let tempRow = []
     for(let y=0; y<nrows; y++){
       let coord = `${y}-${x}`
-      tempRow.push(<Cell flipCellsAroundMe={() => flipCellsAround(coord)} isLit={board[y][x]} key={coord}/>);
+      tempRow.push(<Cell flipCellsAroundMe={() => flipCellsAround(coord)} isLit={board[y][x]} key={coord} coord={coord}/>);
     }
     tableArray.push(<tr key={`row-${x}`}>{tempRow}</tr>)
   }
 
-  const tableBoard = (<table><tbody>{tableArray}</tbody></table>)
+  const tableBoard = (<table data-testid="board"><tbody>{tableArray}</tbody></table>)
 
   // make table board
   return(
