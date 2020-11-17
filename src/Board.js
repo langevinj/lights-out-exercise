@@ -111,4 +111,10 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   // TODO
 }
 
+Board.defaultProps = {
+  "nrows": 3,
+  "ncols": 3,
+  "chanceLightStartsOn": 0.25
+}
+
 export default Board;
