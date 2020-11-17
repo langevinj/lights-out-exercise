@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
+import { getRandomTF, getSurroundingCells } from './helpers.js'
 import "./Board.css";
+// import { render } from "@testing-library/react";
 
 /** Game board of Lights out.
  *
@@ -34,11 +36,24 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   function createBoard() {
     let initialBoard = [];
     // TODO: create array-of-arrays of true/false values
+    while(initialBoard.length < ncols){
+      let tempCol = []
+      for(let i=0; i<nrows; i++){
+        tempCol.push(getRandomTF());
+      }
+      initialBoard.push(tempCol);
+    }
     return initialBoard;
   }
 
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won.
+    let copy = [...board]
+    let flattenedCopy = copy.flat();
+    if(!flattenedCopy.includes(true)){
+      return true
+    }
+    return false
   }
 
   function flipCellsAround(coord) {
@@ -54,19 +69,40 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       };
 
       // TODO: Make a (deep) copy of the oldBoard
-
+      let boardCopy = JSON.parse(JSON.stringify(board));
       // TODO: in the copy, flip this cell and the cells around it
+      flipCell(y, x, boardCopy)
+      const surroundingCells = getSurroundingCells(y, x);
+      for(let i = 0; i < surroundingCells.length; i++){
+        flipCell(surroundingCells[i][0], surroundingCells[i][1], boardCopy)
+      }
 
-      // TODO: return the copy
+      return boardCopy;
     });
   }
 
   // if the game is won, just show a winning msg & render nothing else
-
+  const winningMessage = (<h1>YOU WON!!!</h1>)
   // TODO
 
-  // make table board
+  const tableArray = []
+  for(let y=0; y<board.length; y++){
+    let tempCol = []
+    for(let x=0; x<board[y].length; x++){
+      let coord = `${y}-${x}`
+      tempCol.push(<Cell flipCellsAroundMe={() => flipCellsAround(coord)} isLit={board[y][x]} key={coord}/>);
+    }
+    tableArray.push(<tr key={`col-${y}`}>{tempCol}</tr>)
+  }
 
+  const tableBoard = (<table><tbody>{tableArray}</tbody></table>)
+
+  // make table board
+  return(
+    <div>
+      {hasWon() === true ? winningMessage : tableBoard}
+    </div>
+  )
   // TODO
 }
 
