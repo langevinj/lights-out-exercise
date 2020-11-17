@@ -100,11 +100,18 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     tableArray.push(<tr key={`row-${x}`}>{tempRow}</tr>)
   }
 
-  const tableBoard = (<table data-testid="board"><tbody>{tableArray}</tbody></table>)
+  const tableBoard = (
+  <table data-testid="board">
+    <tbody>
+      {tableArray}
+    </tbody>
+  </table>
+  )
 
   // make table board
   return(
-    <div>
+    <div className="Board">
+      <h1>Lights Out!</h1>
       {hasWon() === true ? winningMessage : tableBoard}
     </div>
   )
