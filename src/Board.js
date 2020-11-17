@@ -65,7 +65,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
         if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
           boardCopy[y][x] = !boardCopy[y][x];
-        }
+        } 
       };
 
       // TODO: Make a (deep) copy of the oldBoard
@@ -74,7 +74,12 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       flipCell(y, x, boardCopy)
       const surroundingCells = getSurroundingCells(y, x);
       for(let i = 0; i < surroundingCells.length; i++){
-        flipCell(surroundingCells[i][0], surroundingCells[i][1], boardCopy)
+        let y = surroundingCells[i][0]
+        let x = surroundingCells[i][1]
+        //check that the cell exists
+        if(y < ncols && x < nrows){
+          flipCell(y, x, boardCopy)
+        } 
       }
 
       return boardCopy;
@@ -86,13 +91,13 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   // TODO
 
   const tableArray = []
-  for(let y=0; y<board.length; y++){
-    let tempCol = []
-    for(let x=0; x<board[y].length; x++){
+  for(let x=0; x<ncols; x++){
+    let tempRow = []
+    for(let y=0; y<nrows; y++){
       let coord = `${y}-${x}`
-      tempCol.push(<Cell flipCellsAroundMe={() => flipCellsAround(coord)} isLit={board[y][x]} key={coord}/>);
+      tempRow.push(<Cell flipCellsAroundMe={() => flipCellsAround(coord)} isLit={board[y][x]} key={coord}/>);
     }
-    tableArray.push(<tr key={`col-${y}`}>{tempCol}</tr>)
+    tableArray.push(<tr key={`row-${x}`}>{tempRow}</tr>)
   }
 
   const tableBoard = (<table><tbody>{tableArray}</tbody></table>)
