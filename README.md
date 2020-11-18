@@ -1,0 +1,1 @@
+Starting with a partially built game of lights out (provided by Springboard) I finished the rest of the basic functionally and wrote a tests. Technologies: React, Jest
